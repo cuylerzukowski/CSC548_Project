@@ -1,0 +1,5 @@
+step 1: Enter the terminal and paste the command (pip install streamlit)
+
+step 2: Navigate to the contatcManager folder (Cd/Desktop/ContactManager)
+
+Step 3: paste command into Terminal (streamlit run Project.py)
