@@ -3,7 +3,7 @@ import json
 import os
 
 CONTACTS_FILE = "contacts.json"
-
+# project made by Harrison Nordmeyer, Cuylerzukowski, Daniel You
 # --- Helper Functions ---
 def load_contacts():
     if os.path.exists(CONTACTS_FILE):
