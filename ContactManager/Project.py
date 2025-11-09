@@ -3,7 +3,7 @@ import json
 import os
 
 CONTACTS_FILE = "contacts.json"
-# project made by Harrison Nordmeyer, Cuylerzukowski, Daniel You
+# project made by Harrison Nordmeyer, Cuyler Zukowski, Daniel You
 # --- Helper Functions ---
 def load_contacts():
     if os.path.exists(CONTACTS_FILE):
@@ -33,8 +33,10 @@ if menu == "View Contacts":
     else:
         for name, info in contacts.items():
             st.write(f"**{name}**")
-            st.write(f"📞 {info['phone']}")
-            st.write(f"📧 {info['email']}")
+            st.write(f"📞 {info.get('phone', '')}")
+            st.write(f"📧 {info.get('email', '')}")
+            st.write(f"🏠 {info.get('address', '')}")
+            st.write(f"📝 {info.get('notes', '')}")
             st.divider()
 
 # --- Add Contact ---
@@ -43,41 +45,74 @@ elif menu == "Add Contact":
     name = st.text_input("Name")
     phone = st.text_input("Phone Number")
     email = st.text_input("Email")
+    address = st.text_area("Address")
+    notes = st.text_area("Notes")
 
     if st.button("Add Contact"):
         if name in contacts:
             st.error("Contact already exists.")
         else:
-            contacts[name] = {"phone": phone, "email": email}
+            contacts[name] = {"phone": phone, "email": email, "address": address, "notes": notes}
             save_contacts(contacts)
             st.success(f"{name} added successfully!")
 
-# --- Search Contact ---
+
+# --- Search Contact --- ~(Updated field to handle case sensitivity, partial matches, and can search all fields)
 elif menu == "Search Contact":
     st.header("Search Contact")
-    search_name = st.text_input("Enter name to search")
+    search_term = st.text_input("Enter search term").lower()
+    found_contacts = False
+
     if st.button("Search"):
-        if search_name in contacts:
-            st.success(f"**{search_name}** found!")
-            st.write(f"📞 {contacts[search_name]['phone']}")
-            st.write(f"📧 {contacts[search_name]['email']}")
-        else:
-            st.error("Contact not found.")
+        for name, info in contacts.items():
+
+            phone = info.get('phone', '')
+            email = info.get('email', '')
+            address = info.get('address', '')
+            notes = info.get('notes', '')
+
+
+            if (search_term in name.lower() or 
+                search_term in phone.lower() or 
+                search_term in email.lower() or
+                search_term in address.lower() or 
+                search_term in notes.lower()):
+
+                
+                st.success(f"**{name}** found!")
+                st.write(f"📞 {info['phone']}")
+                st.write(f"📧 {info['email']}")
+                st.divider()
+                found_contacts = True
+
+        if not found_contacts:
+            st.error("No contacts found matching that term.")
+
+
+
 
 # --- Update Contact ---
 elif menu == "Update Contact":
     st.header("Update Contact")
     name = st.text_input("Enter name to update")
     if name in contacts:
-        new_phone = st.text_input("New Phone Number", value=contacts[name]["phone"])
-        new_email = st.text_input("New Email", value=contacts[name]["email"])
+        new_phone = st.text_input("New Phone Number", value=contacts[name].get('phone', ''))
+        new_email = st.text_input("New Email", value=contacts[name].get('email', ''))
+        new_address = st.text_area("Address", value=contacts[name].get('address', ''))
+        new_notes = st.text_area("Notes", value=contacts[name].get('notes', ''))
+
         if st.button("Update Contact"):
             contacts[name]["phone"] = new_phone
             contacts[name]["email"] = new_email
+            contacts[name]["address"] = new_address
+            contacts[name]["notes"] = new_notes
             save_contacts(contacts)
             st.success(f"{name} updated successfully!")
     elif name:
         st.error("Contact not found.")
+
+
+
 
 # --- Delete Contact ---
 elif menu == "Delete Contact":
