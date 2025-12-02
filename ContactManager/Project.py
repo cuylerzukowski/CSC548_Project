@@ -25,6 +25,20 @@ contacts = load_contacts()
 # Sidebar Navigation
 menu = st.sidebar.radio("Menu", ["View Contacts", "Add Contact", "Search Contact", "Update Contact", "Delete Contact"])
 
+st.sidebar.markdown("---")
+st.sidebar.header("⚙️ Data Options")
+
+json_string = json.dumps(contacts, indent=4)
+
+st.sidebar.download_button(
+    label="📥 Backup Contacts",
+    file_name="contacts_backup.json",
+    mime="application/json",
+    data=json_string
+)
+
+
+
 # --- View Contacts ---
 if menu == "View Contacts":
     st.header("All Contacts")
