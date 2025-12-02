@@ -33,6 +33,7 @@ if menu == "View Contacts":
     else:
         for name, info in contacts.items():
             st.write(f"**{name}**")
+            st.write(f"🏷️ {info.get('category', 'Other')}")
             st.write(f"📞 {info.get('phone', '')}")
             st.write(f"📧 {info.get('email', '')}")
             st.write(f"🏠 {info.get('address', '')}")
@@ -48,11 +49,13 @@ elif menu == "Add Contact":
     address = st.text_area("Address")
     notes = st.text_area("Notes")
 
+    category = st.selectbox("Category", ["Family", "Friend", "Work", "School", "Other"])
+
     if st.button("Add Contact"):
         if name in contacts:
             st.error("Contact already exists.")
         else:
-            contacts[name] = {"phone": phone, "email": email, "address": address, "notes": notes}
+            contacts[name] = {"phone": phone, "email": email, "address": address, "notes": notes, "category": category}
             save_contacts(contacts)
             st.success(f"{name} added successfully!")
 
@@ -100,12 +103,24 @@ elif menu == "Update Contact":
         new_email = st.text_input("New Email", value=contacts[name].get('email', ''))
         new_address = st.text_area("Address", value=contacts[name].get('address', ''))
         new_notes = st.text_area("Notes", value=contacts[name].get('notes', ''))
+    
+
+        current_category = contacts[name].get('category', 'Other')
+        category_options = ["Family", "Friend", "Work", "School", "Other"]
+        
+        try:
+            index = category_options.index(current_category)
+        except ValueError:
+            index = 4 
+
+        new_category = st.selectbox("Category", category_options, index=index)
 
         if st.button("Update Contact"):
             contacts[name]["phone"] = new_phone
             contacts[name]["email"] = new_email
             contacts[name]["address"] = new_address
             contacts[name]["notes"] = new_notes
+            contacts[name]["category"] = new_category
             save_contacts(contacts)
             st.success(f"{name} updated successfully!")
     elif name:

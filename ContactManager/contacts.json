@@ -1,12 +1,22 @@
 {
-    "Dave": {
-        "phone": "(444) 333 3333",
-        "email": "jndkjndkjnd@gmail.com"
-    },
     "Cuyler Zukowski": {
         "phone": "(608)577-6030",
         "email": "cuylerzukowski@gmail.com",
         "address": "2929 California St\nOmaha, NE\n68131",
         "notes": "This is an example of a notes field. "
+    },
+    "John Doe": {
+        "phone": "(801) 772-9074",
+        "email": "johndoe@gmail.com",
+        "address": "222 Blair st",
+        "notes": "Remember that John won't answer any calls after 6pm!",
+        "category": "Friend"
+    },
+    "LeBron James": {
+        "phone": "(310) 324-5691",
+        "email": "lebron@nba.com",
+        "address": "908 Chino St",
+        "notes": "Rollie store with the Rollie on",
+        "category": "Work"
     }
 }
