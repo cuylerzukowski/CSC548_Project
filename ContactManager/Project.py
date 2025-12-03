@@ -23,19 +23,52 @@ st.title("📒 Contact Book")
 contacts = load_contacts()
 
 # Sidebar Navigation
-menu = st.sidebar.radio("Menu", ["View Contacts", "Add Contact", "Search Contact", "Update Contact", "Delete Contact"])
+menu = st.sidebar.radio(
+    "Menu",
+    ["View Contacts", "Add Contact", "Search Contact", "Update Contact", "Delete Contact", "Import Contacts"]
+)
 
 st.sidebar.markdown("---")
 st.sidebar.header("⚙️ Data Options")
 
 json_string = json.dumps(contacts, indent=4)
 
+# backup json file 
 st.sidebar.download_button(
     label="📥 Backup Contacts",
     file_name="contacts_backup.json",
     mime="application/json",
     data=json_string
 )
+
+# --- Import Contacts (Button Reveal) ---
+st.sidebar.markdown("### 📤 Import Contacts")
+
+# Button to show uploader
+if "show_import" not in st.session_state:
+    st.session_state.show_import = False
+
+if st.sidebar.button("Import JSON File"):
+    st.session_state.show_import = not st.session_state.show_import
+
+# Display file uploader ONLY when button is active
+if st.session_state.show_import:
+    uploaded_file = st.sidebar.file_uploader("Upload JSON File", type=["json"])
+
+    if uploaded_file is not None:
+        try:
+            imported_data = json.load(uploaded_file)
+
+            if isinstance(imported_data, dict):
+                contacts.update(imported_data)
+                save_contacts(contacts)
+                st.sidebar.success("Contacts imported successfully!")
+            else:
+                st.sidebar.error("Invalid JSON format — must be an object/dict.")
+        except Exception as e:
+            st.sidebar.error(f"Import error: {e}")
+
+
 
 
 
@@ -154,3 +187,6 @@ elif menu == "Delete Contact":
             st.success(f"{name} deleted successfully!")
         else:
             st.error("Contact not found.")
+
+
+
