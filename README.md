@@ -4,6 +4,9 @@ A lightweight, Python-based tool for efficiently creating, organizing, and retri
 ## Overview
 This application uses Streamlit to create a digital rolodex that manages your network. It allows for local data persistence via JSON, enabling users to add, update, search, and categorize contacts without requiring a complex database setup. The system includes robust search functionality and data backup options.
 
+## Demo Video
+https://youtu.be/Sl7ZCi4BEec
+
 ## Key Features
 * **CRUD Operations:** Full capability to Create, Read, Update, and Delete contact entries
 * **Smart Search:** Case-insensitive search that scans names, phone numbers, emails, addresses, and notes simultaneously
